@@ -12,7 +12,9 @@
   <a href="https://jimureport.com/chat2bi">官网</a> ·
   <a href="#快速开始">快速开始</a> ·
   <a href="#功能特性">功能特性</a> ·
-  <a href="#技术架构">技术架构</a>
+  <a href="#技术架构">技术架构</a> ·
+  <a href="#源码下载">源码下载</a> ·
+  <a href="#快速集成">快速集成</a>
 </p>
 
 ---
@@ -79,6 +81,67 @@ cd JimuChatBI
 3. 启动服务并进入对话界面开始提问
 
 详细的环境要求与部署说明，请参考[官网文档](https://jimureport.com/chat2bi)。
+
+## 源码下载
+
+- GitHub：<https://github.com/jeecgboot/jimureport>
+- Gitee：<https://gitee.com/jeecg/jimureport>
+
+## 技术文档
+
+- 🌐 在线体验：<https://jimureport.com/chat2bi>
+- 📚 技术文档：<https://help.jimureport.com/chat2bi>
+- 🎬 视频教程：<https://www.bilibili.com/video/BV1wBNm6HE6u>
+
+## 快速集成
+
+JimuChatBI 是一个独立 JAR（Spring Boot starter），自动装配嵌入宿主应用，兼容 Spring Boot 4，集成像积木报表一样简单。**前提：宿主应用已集成积木报表。**
+
+### 1. 引入依赖
+
+```xml
+<!-- 积木chatbi -->
+<dependency>
+    <groupId>org.jeecgframework.jimureport</groupId>
+    <artifactId>jimuchatbi-spring-boot4-starter</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+
+> 前提：需先集成积木报表 `jimureport-spring-boot4-starter` 的依赖，参考文档 <https://help.jimureport.com/quick.html>
+
+### 2. 配置 DeepSeek 大模型
+
+问答要靠大模型生成 SQL，必须先配 AI。默认适配 DeepSeek，采用 OpenAI 接口。
+
+```yaml
+jeecg:
+  jmreport:
+    ai:
+      # OpenAI 兼容 base 地址（必填）
+      base-url: https://api.deepseek.com
+      # API Key（必填，留空则 AI 不可用）
+      api-key: sk-??
+      # 模型名
+      model: deepseek-v4-pro
+      # 采样温度，可选
+      temperature: 0
+      # 单次生成最大 token 数(传给大模型的 max_tokens)，DeepSeek 合法范围[1,393216]
+      max-tokens: 16384
+```
+
+### 3. 配置 Minidao 扫码路径
+
+这块参考积木报表依赖集成。
+
+```yaml
+minidao:
+  base-package: org.jeecg.modules.jmreport.*,org.jeecg.modules.drag.*,org.jeecg.modules.chat2bi.*
+```
+
+### 4. JimuChatBI 模块升级 SQL
+
+该模块建表脚本请查看：<https://gitee.com/jeecg/jimureport/blob/master/db/jimuchatbi_module_upgrade.sql>
 
 ## 使用示例
 
